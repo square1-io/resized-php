@@ -13,7 +13,7 @@ $ composer require square1/resized
 ## Usage
 
 ``` php
-//Coming sone!
+//Coming soon!
 ```
 
 ## Testing
