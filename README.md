@@ -13,7 +13,18 @@ $ composer require square1/resized
 ## Usage
 
 ``` php
-//Coming soon!
+
+    $resized = new \Square1\Resized\Resized('key', 'secret');
+
+    //Override host if applicable
+    $resized->setHost('https://img.resized.co');
+
+    //Set the default failover image
+    $resized->setDefaultImage('http:/www.example.com/no-image.jpg');
+
+    //Process image resize with the parameters: ($url, $width, $height, $title'
+    $img = $resized->process('http://www.example.com/some-image-to-resize.jpg', '100', '100', 'This is a title');
+
 ```
 
 ## Testing
