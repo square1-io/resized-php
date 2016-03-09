@@ -22,7 +22,7 @@ $ composer require square1/resized
     //Set the default failover image
     $resized->setDefaultImage('http:/www.example.com/no-image.jpg');
 
-    //Process image resize with the parameters: ($url, $width, $height, $title')
+    //Process image resize with the parameters: ($url, $width, $height, $title)
     $img = $resized->process('http://www.example.com/some-image.jpg', '100', '100', 'This is a title');
 ```
 
