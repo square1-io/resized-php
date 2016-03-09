@@ -1,7 +1,7 @@
 {
     "name": "square1/resized",
     "type": "library",
-    "description": "On demand image resizing service.",
+    "description": "On-demand image manipulation service.",
     "keywords": [
         "square1",
         "resized",

@@ -25,7 +25,6 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
 
         $resized = new Resized('key', 'secret-d0be2dc421be4fcd0172e5afceea3970e2f3d940');
         $resized->setDefaultImage('http:/www.example.com/no-image.jpg');
-
     }
 
     /**
@@ -109,7 +108,6 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
         $resized->setDefaultImage('http://www.example.com/no-image.jpg');
         $img = $resized->process('http://www.example.com/some-image-to-resize.jpg', '100');
 
-
         $this->assertEquals($img, 'https://img.resized.co/key/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvd3d3LmV4YW1wbGUuY29tXFxcL3NvbWUtaW1hZ2UtdG8tcmVzaXplLmpwZ1wiLFwid2lkdGhcIjpcIjEwMFwiLFwiaGVpZ2h0XCI6XCJcIixcImRlZmF1bHRcIjpcImh0dHA6XFxcL1xcXC93d3cuZXhhbXBsZS5jb21cXFwvbm8taW1hZ2UuanBnXCJ9IiwiaGFzaCI6IjA5MzRiNzNmOTY0NTI0OGFlZDM5NmUwNTFkMDQ3NTM2MTY3NGU5ZWQifQ==/some-image-to-resize.jpg');
     }
 
@@ -135,7 +133,6 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
         $img = $resized->process('http://www.example.com/some-image-to-resize.jpg', '', '');
 
         $this->assertEquals($img, 'https://img.resized.co/key/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvd3d3LmV4YW1wbGUuY29tXFxcL3NvbWUtaW1hZ2UtdG8tcmVzaXplLmpwZ1wiLFwid2lkdGhcIjpcIlwiLFwiaGVpZ2h0XCI6XCJcIixcImRlZmF1bHRcIjpcImh0dHA6XFxcL1xcXC93d3cuZXhhbXBsZS5jb21cXFwvbm8taW1hZ2UuanBnXCJ9IiwiaGFzaCI6IjIwYjA0MWM4MTcyNWNkZWE0YjI0Y2Q5OWUwNzFjN2NhZGQ5NzQ0YjYifQ==/some-image-to-resize.jpg');
-
     }
 
      /**
