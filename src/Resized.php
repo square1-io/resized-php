@@ -80,8 +80,9 @@ class Resized
     */
     public function process($url, $width = '', $height = '', $title = '')
     {
+        //If invalid URL passed, set to default image
         if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Invalid URL');
+            $url = $this->defaultImage;
         }
 
         $data = json_encode([
