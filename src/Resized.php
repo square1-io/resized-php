@@ -22,7 +22,7 @@ class Resized
     /**
      * @var string
      */
-    private $defaultImage = 'https://cache.resized.co/no-image.png';
+    private $defaultImage = 'https://img.resized.co/no-image.png';
 
     /**
     * Constructor
