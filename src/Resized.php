@@ -25,17 +25,23 @@ class Resized
     private $defaultImage = 'https://img.resized.co/no-image.png';
 
     /**
+     * @var array
+     */
+    private $defaultOptions = [];
+
+    /**
     * Constructor
     *
     * @param string $key
     * @param string $secret
+    * @param array $options
     */
     public function __construct($key, $secret)
     {
         if (strlen($secret) != 47) {
             throw new \InvalidArgumentException('Invalid Secret');
         }
-        
+
         $this->key = $key;
         $this->secret = $secret;
     }
@@ -69,16 +75,27 @@ class Resized
     }
 
     /**
+    * Set default image processing options
+    *
+    * @param array $options
+    */
+    public function setDefaultOptions(array $options)
+    {
+        $this->defaultOptions = $options;
+    }
+
+    /**
     * Process image
     *
     * @param string $url
     * @param int    $width
     * @param int    $height
     * @param string $title
+    * @param array  $options
     *
     * @param string
     */
-    public function process($url, $width = '', $height = '', $title = '')
+    public function process($url, $width = '', $height = '', $title = '', $options = [])
     {
         //If invalid URL passed, set to default image
         if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
@@ -89,7 +106,8 @@ class Resized
             'url' => $url,
             'width' => $width,
             'height' => $height,
-            'default' => $this->defaultImage
+            'default' => $this->defaultImage,
+            'options' => array_merge($this->defaultOptions, $options)
         ]);
 
         $uri = base64_encode(json_encode([
@@ -135,13 +153,13 @@ class Resized
         return $filename;
     }
 
-     /**
-     * Generate a URL friendly "slug" from a given string.
-     *
-     * @param string $str
-     *
-     * @return string
-     */
+    /**
+    * Generate a URL friendly "slug" from a given string.
+    *
+    * @param string $str
+    *
+    * @return string
+    */
     private function slug($str)
     {
         // replace non letter or digits by -
