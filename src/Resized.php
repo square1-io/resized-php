@@ -29,10 +29,12 @@ class Resized
      */
     private $defaultOptions = [];
 
+
     /**
      * @var int
      */
-    private $maxSlugLength;
+    private $maxSlugLength = 100;
+
 
     /**
     * Constructor
@@ -90,6 +92,17 @@ class Resized
     }
 
     /**
+     * Set max slug length.
+     *
+     * @param int $length
+     */
+    public function setMaxSlugLength(int $length)
+    {
+        $this->maxSlugLength = $length;
+    }
+
+
+    /**
     * Process image
     *
     * @param string $url
@@ -97,18 +110,15 @@ class Resized
     * @param int    $height
     * @param string $title
     * @param array  $options
-    * @param int    $maxLength
     *
     * @return  string
     */
-    public function process($url, $width = '', $height = '', $title = '', $options = [], $maxLength = 100)
+    public function process($url, $width = '', $height = '', $title = '', $options = [])
     {
         //If invalid URL passed, set to default image
         if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
             $url = $this->defaultImage;
         }
-
-        $this->maxSlugLength = $maxLength;
 
         $data = json_encode([
             'url' => $url,
@@ -155,10 +165,11 @@ class Resized
 
         $extension = pathinfo($url, PATHINFO_EXTENSION);
         if (!empty($extension)) {
-            return $filename.'.'.$extension;
+            $maxLength = $this->maxSlugLength - strlen('.'.$extension);
+            return substr($filename, 0, $maxLength).'.'.$extension;
         }
 
-        return $filename;
+        return substr($filename, 0, $this->maxSlugLength);
     }
 
     /**
@@ -170,9 +181,6 @@ class Resized
     */
     private function slug($str)
     {
-        // Limit characters
-        $str = substr($str, 0, $this->maxSlugLength);
-
         // replace non letter or digits by -
         $str = preg_replace('~[^\\pL\d]+~u', '-', $str);
 
