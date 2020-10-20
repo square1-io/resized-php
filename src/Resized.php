@@ -29,6 +29,13 @@ class Resized
      */
     private $defaultOptions = [];
 
+
+    /**
+     * @var int
+     */
+    private $maxSlugLength = 100;
+
+
     /**
     * Constructor
     *
@@ -85,6 +92,17 @@ class Resized
     }
 
     /**
+     * Set max slug length.
+     *
+     * @param int $length
+     */
+    public function setMaxSlugLength(int $length)
+    {
+        $this->maxSlugLength = $length;
+    }
+
+
+    /**
     * Process image
     *
     * @param string $url
@@ -93,7 +111,7 @@ class Resized
     * @param string $title
     * @param array  $options
     *
-    * @param string
+    * @return  string
     */
     public function process($url, $width = '', $height = '', $title = '', $options = [])
     {
@@ -130,7 +148,7 @@ class Resized
 
 
     /**
-     * Get seo slug and file extention
+     * Get seo slug and file extension
      *
      * @param string $url
      * @param string $title
@@ -145,12 +163,13 @@ class Resized
             $filename = $this->slug(pathinfo($url, PATHINFO_FILENAME));
         }
 
-        $extention = pathinfo($url, PATHINFO_EXTENSION);
-        if (!empty($extention)) {
-            return $filename.'.'.$extention;
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+        if (!empty($extension)) {
+            $maxLength = $this->maxSlugLength - strlen('.'.$extension);
+            return substr($filename, 0, $maxLength).'.'.$extension;
         }
 
-        return $filename;
+        return substr($filename, 0, $this->maxSlugLength);
     }
 
     /**
