@@ -2,16 +2,18 @@
 
 namespace Square1\Resized\Test;
 
+use PHPUnit\Framework\TestCase;
 use Square1\Resized\Resized;
 
-class ResizedTest extends \PHPUnit_Framework_TestCase
+class ResizedTest extends TestCase
 {
     /**
      * Test invalid secret
      */
     public function testInvalidSecret()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Invalid Secret');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Secret');
 
         $resized = new Resized('key', 'secret-123456789');
     }
@@ -21,7 +23,8 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidDefaultURL()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Invalid Default Image URL');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Default Image URL');
 
         $resized = new Resized('key', 'secret-d0be2dc421be4fcd0172e5afceea3970e2f3d940');
         $resized->setDefaultImage('http:/www.example.com/no-image.jpg');
@@ -32,7 +35,8 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidHost()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Invalid Host URL');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Host URL');
 
         $resized = new Resized('key', 'secret-d0be2dc421be4fcd0172e5afceea3970e2f3d940');
         $resized->setHost('https:/img.resized.co');
@@ -136,8 +140,8 @@ class ResizedTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * Test no contraints params
-    */
+     * Test no contraints params
+     */
     public function testNoConstraintParams()
     {
         $resized = new Resized('key', 'secret-d0be2dc421be4fcd0172e5afceea3970e2f3d940');
