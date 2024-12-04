@@ -150,4 +150,20 @@ class ResizedTest extends TestCase
 
         $this->assertEquals($img, 'https://img.resized.co/key/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvd3d3LmV4YW1wbGUuY29tXFxcL3NvbWUtaW1hZ2UtdG8tcmVzaXplLmpwZ1wiLFwid2lkdGhcIjpcIlwiLFwiaGVpZ2h0XCI6XCJcIixcImRlZmF1bHRcIjpcImh0dHA6XFxcL1xcXC93d3cuZXhhbXBsZS5jb21cXFwvbm8taW1hZ2UuanBnXCIsXCJvcHRpb25zXCI6W119IiwiaGFzaCI6IjMzMGZhODdhOWFmNGJmNTZiOWI2ODQ5NjAxNTZmMmYwNWRiY2Y0ZTUifQ==/some-image-to-resize.jpg');
     }
+
+    public function testProcessBuild()
+    {
+        $resized = new Resized('key', 'secret-d0be2dc421be4fcd0172e5afceea3970e2f3d940');
+
+        $resized->setDefaultImage('http://www.example.com/no-image.jpg');
+        $img = $resized->src('http://www.example.com/some-image-to-resize.jpg')
+            ->width(100)
+            ->height(100)
+            ->output('webp')
+            ->url();
+
+         $this->assertEquals($img, 'https://img.resized.co/key/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvd3d3LmV4YW1wbGUuY29tXFxcL3NvbWUtaW1hZ2UtdG8tcmVzaXplLmpwZ1wiLFwid2lkdGhcIjoxMDAsXCJoZWlnaHRcIjoxMDAsXCJkZWZhdWx0XCI6XCJodHRwOlxcXC9cXFwvd3d3LmV4YW1wbGUuY29tXFxcL25vLWltYWdlLmpwZ1wiLFwib3B0aW9uc1wiOntcIm91dHB1dFwiOlwid2VicFwifX0iLCJoYXNoIjoiOWE5MWM4NWM2NzJlZTY4YzU3OTExYjEwYjA3N2M1ZTRlNjcwN2ZiYSJ9/some-image-to-resize.jpg');
+
+      }
+
 }

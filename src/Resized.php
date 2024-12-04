@@ -146,6 +146,15 @@ class Resized
         return implode('/', $fullUrl);
     }
 
+    /**
+     * @param $url
+     * @return Builder
+     */
+    public function src($url) : Builder
+    {
+        return new Builder($this, $url);
+    }
+
 
     /**
      * Get seo slug and file extension

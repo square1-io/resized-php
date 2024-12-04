@@ -29,6 +29,16 @@ $ composer require square1/resized
     $img = $resized->process('http://www.example.com/some-image.jpg', '100', '100', 'This is a title');
 ```
 
+Using the builder you can omit parameters and is more flexible:
+
+```php
+$img = $resized->builder('http://www.example.com/some-image.jpg')
+    ->width(100)
+    ->quality(90)
+    ->output('webp')
+    ->url();
+```
+
 ## Testing
 
 ``` bash
