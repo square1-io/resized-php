@@ -2,120 +2,68 @@
 
 namespace Square1\Resized;
 
+use InvalidArgumentException;
+use JsonException;
+
 class Resized
 {
-    /**
-     * @var string
-     */
-    private $key;
+    protected string $key;
 
-    /**
-     * @var string
-     */
-    private $secret;
+    protected string $secret;
 
-    /**
-     * @var string
-     */
-    private $host = 'https://img.resized.co';
+    private string $host = 'https://img.resized.co';
 
-    /**
-     * @var string
-     */
-    private $defaultImage = 'https://img.resized.co/no-image.png';
+    private string $defaultImage = 'https://img.resized.co/no-image.png';
 
-    /**
-     * @var array
-     */
-    private $defaultOptions = [];
+    private array $defaultOptions = [];
 
+    private int $maxSlugLength = 100;
 
-    /**
-     * @var int
-     */
-    private $maxSlugLength = 100;
-
-
-    /**
-    * Constructor
-    *
-    * @param string $key
-    * @param string $secret
-    * @param array $options
-    */
-    public function __construct($key, $secret)
+    public function __construct(string $key, string $secret)
     {
-        if (strlen($secret) != 47) {
-            throw new \InvalidArgumentException('Invalid Secret');
+        if (strlen($secret) !== 47) {
+            throw new InvalidArgumentException('Invalid Secret');
         }
 
         $this->key = $key;
         $this->secret = $secret;
     }
 
-    /**
-    * Set host name
-    *
-    * @param string $url
-    */
-    public function setHost($url)
+    public function setHost(string $url): void
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Invalid Host URL');
+            throw new InvalidArgumentException('Invalid Host URL');
         }
 
         $this->host = $url;
     }
 
-    /**
-    * Set default image url
-    *
-    * @param string $url
-    */
-    public function setDefaultImage($url)
+    public function setDefaultImage(string $url): void
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Invalid Default Image URL');
+            throw new InvalidArgumentException('Invalid Default Image URL');
         }
 
         $this->defaultImage = $url;
     }
 
-    /**
-    * Set default image processing options
-    *
-    * @param array $options
-    */
-    public function setDefaultOptions(array $options)
+    public function setDefaultOptions(array $options): void
     {
         $this->defaultOptions = $options;
     }
 
-    /**
-     * Set max slug length.
-     *
-     * @param int $length
-     */
-    public function setMaxSlugLength(int $length)
+    public function setMaxSlugLength(int $length): void
     {
         $this->maxSlugLength = $length;
     }
 
-
     /**
-    * Process image
-    *
-    * @param string $url
-    * @param int    $width
-    * @param int    $height
-    * @param string $title
-    * @param array  $options
-    *
-    * @return  string
-    */
-    public function process($url, $width = '', $height = '', $title = '', $options = [])
+     * Width and height accept an empty string to indicate no constraint on that dimension.
+     *
+     * @throws JsonException
+     */
+    public function process(string $url, string $width = '', string $height = '', string $title = '', array $options = []): string
     {
-        //If invalid URL passed, set to default image
         if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
             $url = $this->defaultImage;
         }
@@ -125,75 +73,55 @@ class Resized
             'width' => $width,
             'height' => $height,
             'default' => $this->defaultImage,
-            'options' => array_merge($this->defaultOptions, $options)
-        ]);
+            'options' => array_merge($this->defaultOptions, $options),
+        ], JSON_THROW_ON_ERROR);
 
         $uri = base64_encode(json_encode([
             'data' => $data,
-            'hash' => sha1($this->key.$this->secret.$data)
-        ]));
+            'hash' => sha1($this->key . $this->secret . $data),
+        ], JSON_THROW_ON_ERROR));
 
-        // Make the b64 string url-safe
         $uri = str_replace(['+', '/'], ['-', '_'], $uri);
 
         $fullUrl = [
             $this->host,
             $this->key,
             $uri,
-            $this->filename($url, $title)
+            $this->filename($url, $title),
         ];
 
         return implode('/', $fullUrl);
     }
 
-
-    /**
-     * Get seo slug and file extension
-     *
-     * @param string $url
-     * @param string $title
-     *
-     * @return string|null
-     */
-    private function filename($url, $title = '')
+    private function filename(string $url, string $title = ''): ?string
     {
-        if (!empty($title)) {
+        if (! empty($title)) {
             $filename = $this->slug($title);
         } else {
             $filename = $this->slug(pathinfo($url, PATHINFO_FILENAME));
         }
 
         $extension = pathinfo($url, PATHINFO_EXTENSION);
-        if (!empty($extension)) {
-            $maxLength = $this->maxSlugLength - strlen('.'.$extension);
-            return substr($filename, 0, $maxLength).'.'.$extension;
+
+        if (! empty($extension)) {
+            $maxLength = $this->maxSlugLength - strlen('.' . $extension);
+
+            return substr($filename, 0, $maxLength) . '.' . $extension;
         }
 
         return substr($filename, 0, $this->maxSlugLength);
     }
 
-    /**
-    * Generate a URL friendly "slug" from a given string.
-    *
-    * @param string $str
-    *
-    * @return string
-    */
-    private function slug($str)
+    private function slug(string $str): string
     {
-        // replace non letter or digits by -
         $str = preg_replace('~[^\\pL\d]+~u', '-', $str);
 
         $str = trim($str, '-');
 
-        // transliterate
         $str = iconv('utf-8', 'us-ascii//TRANSLIT', $str);
 
         $str = strtolower($str);
 
-        // remove unwanted characters
-        $str = preg_replace('~[^-\w]+~', '', $str);
-
-        return $str;
+        return preg_replace('~[^-\w]+~', '', $str);
     }
 }
