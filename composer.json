@@ -12,17 +12,20 @@
     "authors": [
         {
             "name": "Ciaran Maher",
-            "email": "hello@square1.io",
+            "email": "ciaran@square1.io",
             "homepage": "https://www.resized.co"
+        },
+        {
+            "name": "Jose Vicente Orts",
+            "email": "vince@square1.io"
         }
     ],
     "require": {
-        "php" : "~7.2|~8.0"
+        "php": "^8.2"
     },
     "require-dev": {
-        "phpunit/phpunit" : "~9.5.9",
-        "scrutinizer/ocular": "~1.1",
-        "squizlabs/php_codesniffer": "~2.3"
+        "phpunit/phpunit": "^11.0|^12.0|^13.0",
+        "friendsofphp/php-cs-fixer": "^3.95.0"
     },
     "autoload": {
         "psr-4": {
@@ -35,11 +38,13 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "format": "php-cs-fixer fix --allow-risky=yes",
+        "format:check": "php-cs-fixer check --allow-risky=yes"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }

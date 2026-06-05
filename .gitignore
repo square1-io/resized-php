@@ -2,3 +2,8 @@ build
 composer.lock
 docs
 vendor
+.php-cs-fixer.cache
+.phpunit.result.cache
+.claude
+.idea
+.php-cs-fixer.cache

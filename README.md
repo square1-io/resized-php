@@ -2,6 +2,8 @@
 
 This is the PHP client for resized.co, a realtime image resize manipulation service.
 
+Requires PHP 8.2 or higher.
+
 ## Install
 
 Via Composer
