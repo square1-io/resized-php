@@ -62,7 +62,7 @@ class Resized
      *
      * @throws JsonException
      */
-    public function process(string $url, string $width = '', string $height = '', string $title = '', array $options = []): string
+    public function process(?string $url, int|string|null $width = null, int|string|null $height = null, ?string $title = '', array $options = []): string
     {
         if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
             $url = $this->defaultImage;
@@ -93,7 +93,7 @@ class Resized
         return implode('/', $fullUrl);
     }
 
-    private function filename(string $url, string $title = ''): ?string
+    private function filename(?string $url, ?string $title = ''): ?string
     {
         if (! empty($title)) {
             $filename = $this->slug($title);
@@ -112,7 +112,7 @@ class Resized
         return substr($filename, 0, $this->maxSlugLength);
     }
 
-    private function slug(string $str): string
+    private function slug(?string $str): string
     {
         $str = preg_replace('~[^\\pL\d]+~u', '-', $str);
 

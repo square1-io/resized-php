@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-06-08
+
+### Changed
+
+- Made `$url` and `$title` parameters in `process()` accept null values.
+- Made `$width` and `$height` parameters in `process()` accept `int`, `string`, or `null`. Passing `null` means no constraint on that dimension.
+- Added `ext-iconv` as an explicit Composer requirement.
+
 ## [2.0.0] - 2026-06-04
 
 ### Changed
