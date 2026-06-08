@@ -3,7 +3,6 @@
 namespace Square1\Resized\Test;
 
 use InvalidArgumentException;
-use JsonException;
 use PHPUnit\Framework\TestCase;
 use Square1\Resized\Resized;
 
